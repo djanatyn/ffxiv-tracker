@@ -54,48 +54,9 @@ pub struct JobSnapshot {
 }
 
 #[derive(Debug)]
-pub struct JobSnapshots {
-    // tanks
-    paladin: JobSnapshot,
-    warrior: JobSnapshot,
-    dark_knight: JobSnapshot,
-    gunbreaker: JobSnapshot,
-    // healers
-    white_mage: JobSnapshot,
-    scholar: JobSnapshot,
-    astrologian: JobSnapshot,
-    sage: JobSnapshot,
-    // melee dps
-    monk: JobSnapshot,
-    dragoon: JobSnapshot,
-    ninja: JobSnapshot,
-    samurai: JobSnapshot,
-    reaper: JobSnapshot,
-    // phys ranged
-    bard: JobSnapshot,
-    machinist: JobSnapshot,
-    dancer: JobSnapshot,
-    // casters
-    black_mage: JobSnapshot,
-    summoner: JobSnapshot,
-    red_mage: JobSnapshot,
-    blue_mage: JobSnapshot,
-    // disciples of hand
-    carpenter: JobSnapshot,
-    blacksmith: JobSnapshot,
-    armorer: JobSnapshot,
-    goldsmith: JobSnapshot,
-    leatherworker: JobSnapshot,
-    weaver: JobSnapshot,
-    alchemist: JobSnapshot,
-    culinarian: JobSnapshot,
-    // disciples of land
-    miner: JobSnapshot,
-    botanist: JobSnapshot,
-    fisher: JobSnapshot,
-}
+pub struct PlayerJobSnapshot(HashMap<Job, JobSnapshot>);
 
-impl TryFrom<Vec<JobSnapshot>> for JobSnapshots {
+impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
     type Error = String;
 
     fn try_from(snapshots: Vec<JobSnapshot>) -> Result<Self, Self::Error> {
@@ -103,43 +64,40 @@ impl TryFrom<Vec<JobSnapshot>> for JobSnapshots {
         for snapshot in snapshots {
             jobs.insert(snapshot.job.clone(), snapshot);
         }
-        Ok(JobSnapshots {
-            paladin: jobs.remove(&Job::Paladin).ok_or("missing paladin")?,
-            warrior: jobs.remove(&Job::Warrior).ok_or("missing warrior")?,
-            dark_knight: jobs.remove(&Job::DarkKnight).ok_or("missing dark knight")?,
-            gunbreaker: jobs.remove(&Job::Gunbreaker).ok_or("missing gunbreaker")?,
-            white_mage: jobs.remove(&Job::WhiteMage).ok_or("missing white mage")?,
-            scholar: jobs.remove(&Job::Scholar).ok_or("missing scholar")?,
-            astrologian: jobs
-                .remove(&Job::Astrologian)
-                .ok_or("missing astrologian")?,
-            sage: jobs.remove(&Job::Sage).ok_or("missing sage")?,
-            monk: jobs.remove(&Job::Monk).ok_or("missing monk")?,
-            dragoon: jobs.remove(&Job::Dragoon).ok_or("missing dragoon")?,
-            ninja: jobs.remove(&Job::Ninja).ok_or("missing ninja")?,
-            samurai: jobs.remove(&Job::Samurai).ok_or("missing samurai")?,
-            reaper: jobs.remove(&Job::Reaper).ok_or("missing reaper")?,
-            bard: jobs.remove(&Job::Bard).ok_or("missing bard")?,
-            machinist: jobs.remove(&Job::Machinist).ok_or("missing machinist")?,
-            dancer: jobs.remove(&Job::Dancer).ok_or("missing dancer")?,
-            black_mage: jobs.remove(&Job::BlackMage).ok_or("missing black mage")?,
-            summoner: jobs.remove(&Job::Summoner).ok_or("missing summoner")?,
-            red_mage: jobs.remove(&Job::RedMage).ok_or("missing red mage")?,
-            blue_mage: jobs.remove(&Job::BlueMage).ok_or("missing blue mage")?,
-            carpenter: jobs.remove(&Job::Carpenter).ok_or("missing carpenter")?,
-            blacksmith: jobs.remove(&Job::Blacksmith).ok_or("missing blacksmith")?,
-            armorer: jobs.remove(&Job::Armorer).ok_or("missing armorer")?,
-            goldsmith: jobs.remove(&Job::Goldsmith).ok_or("missing goldsmith")?,
-            leatherworker: jobs
-                .remove(&Job::Leatherworker)
-                .ok_or("missing leatherworker")?,
-            weaver: jobs.remove(&Job::Weaver).ok_or("missing weaver")?,
-            alchemist: jobs.remove(&Job::Alchemist).ok_or("missing alchemist")?,
-            culinarian: jobs.remove(&Job::Culinarian).ok_or("missing culinarian")?,
-            miner: jobs.remove(&Job::Miner).ok_or("missing miner")?,
-            botanist: jobs.remove(&Job::Botanist).ok_or("missing botanist")?,
-            fisher: jobs.remove(&Job::Fisher).ok_or("missing fisher")?,
-        })
+        // check for each job before constructing
+        jobs.contains_key(&Job::Paladin) || Err("missing paladin")?;
+        jobs.contains_key(&Job::Warrior) || Err("missing warrior")?;
+        jobs.contains_key(&Job::DarkKnight) || Err("missing dark knight")?;
+        jobs.contains_key(&Job::Gunbreaker) || Err("missing gunbreaker")?;
+        jobs.contains_key(&Job::WhiteMage) || Err("missing white mage")?;
+        jobs.contains_key(&Job::Scholar) || Err("missing scholar")?;
+        jobs.contains_key(&Job::Astrologian) || Err("missing astrologian")?;
+        jobs.contains_key(&Job::Sage) || Err("missing sage")?;
+        jobs.contains_key(&Job::Monk) || Err("missing monk")?;
+        jobs.contains_key(&Job::Dragoon) || Err("missing dragoon")?;
+        jobs.contains_key(&Job::Ninja) || Err("missing ninja")?;
+        jobs.contains_key(&Job::Samurai) || Err("missing samurai")?;
+        jobs.contains_key(&Job::Reaper) || Err("missing reaper")?;
+        jobs.contains_key(&Job::Bard) || Err("missing bard")?;
+        jobs.contains_key(&Job::Machinist) || Err("missing machinist")?;
+        jobs.contains_key(&Job::Dancer) || Err("missing dancer")?;
+        jobs.contains_key(&Job::BlackMage) || Err("missing black mage")?;
+        jobs.contains_key(&Job::Summoner) || Err("missing summoner")?;
+        jobs.contains_key(&Job::RedMage) || Err("missing red mage")?;
+        jobs.contains_key(&Job::BlueMage) || Err("missing blue mage")?;
+        jobs.contains_key(&Job::Carpenter) || Err("missing carpenter")?;
+        jobs.contains_key(&Job::Blacksmith) || Err("missing blacksmith")?;
+        jobs.contains_key(&Job::Armorer) || Err("missing armorer")?;
+        jobs.contains_key(&Job::Goldsmith) || Err("missing goldsmith")?;
+        jobs.contains_key(&Job::Leatherworker) || Err("missing leatherworker")?;
+        jobs.contains_key(&Job::Weaver) || Err("missing weaver")?;
+        jobs.contains_key(&Job::Alchemist) || Err("missing alchemist")?;
+        jobs.contains_key(&Job::Culinarian) || Err("missing culinarian")?;
+        jobs.contains_key(&Job::Miner) || Err("missing miner")?;
+        jobs.contains_key(&Job::Botanist) || Err("missing botanist")?;
+        jobs.contains_key(&Job::Fisher) || Err("missing fisher")?;
+
+        Ok(PlayerJobSnapshot(jobs))
     }
 }
 
@@ -155,7 +113,7 @@ pub struct Profile {
     race_clan_gender: String, // TODO
     hp: u64,
     mp: u64,
-    jobs: JobSnapshots,
+    jobs: PlayerJobSnapshot,
 }
 
 impl Profile {
@@ -311,7 +269,7 @@ impl Profile {
                 exp: exp.to_string(),
             });
         }
-        let jobs = JobSnapshots::try_from(snapshots)?;
+        let jobs = PlayerJobSnapshot::try_from(snapshots)?;
         Ok(Profile {
             jobs,
             user_id,
