@@ -2,9 +2,10 @@
 
 use scraper::{Html, Selector};
 use std::{collections::HashMap, str::FromStr};
+use strum::{EnumIter, EnumString, IntoEnumIterator};
 
-#[derive(Debug, parse_display::Display, parse_display::FromStr, Eq, Hash, PartialEq, Clone)]
-#[display(style = "Title Case")]
+#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone)]
+#[strum(serialize_all = "title_case")]
 pub enum Job {
     // tanks
     Paladin,
@@ -64,38 +65,13 @@ impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
         for snapshot in snapshots {
             jobs.insert(snapshot.job.clone(), snapshot);
         }
+
         // check for each job before constructing
-        jobs.contains_key(&Job::Paladin) || Err("missing paladin")?;
-        jobs.contains_key(&Job::Warrior) || Err("missing warrior")?;
-        jobs.contains_key(&Job::DarkKnight) || Err("missing dark knight")?;
-        jobs.contains_key(&Job::Gunbreaker) || Err("missing gunbreaker")?;
-        jobs.contains_key(&Job::WhiteMage) || Err("missing white mage")?;
-        jobs.contains_key(&Job::Scholar) || Err("missing scholar")?;
-        jobs.contains_key(&Job::Astrologian) || Err("missing astrologian")?;
-        jobs.contains_key(&Job::Sage) || Err("missing sage")?;
-        jobs.contains_key(&Job::Monk) || Err("missing monk")?;
-        jobs.contains_key(&Job::Dragoon) || Err("missing dragoon")?;
-        jobs.contains_key(&Job::Ninja) || Err("missing ninja")?;
-        jobs.contains_key(&Job::Samurai) || Err("missing samurai")?;
-        jobs.contains_key(&Job::Reaper) || Err("missing reaper")?;
-        jobs.contains_key(&Job::Bard) || Err("missing bard")?;
-        jobs.contains_key(&Job::Machinist) || Err("missing machinist")?;
-        jobs.contains_key(&Job::Dancer) || Err("missing dancer")?;
-        jobs.contains_key(&Job::BlackMage) || Err("missing black mage")?;
-        jobs.contains_key(&Job::Summoner) || Err("missing summoner")?;
-        jobs.contains_key(&Job::RedMage) || Err("missing red mage")?;
-        jobs.contains_key(&Job::BlueMage) || Err("missing blue mage")?;
-        jobs.contains_key(&Job::Carpenter) || Err("missing carpenter")?;
-        jobs.contains_key(&Job::Blacksmith) || Err("missing blacksmith")?;
-        jobs.contains_key(&Job::Armorer) || Err("missing armorer")?;
-        jobs.contains_key(&Job::Goldsmith) || Err("missing goldsmith")?;
-        jobs.contains_key(&Job::Leatherworker) || Err("missing leatherworker")?;
-        jobs.contains_key(&Job::Weaver) || Err("missing weaver")?;
-        jobs.contains_key(&Job::Alchemist) || Err("missing alchemist")?;
-        jobs.contains_key(&Job::Culinarian) || Err("missing culinarian")?;
-        jobs.contains_key(&Job::Miner) || Err("missing miner")?;
-        jobs.contains_key(&Job::Botanist) || Err("missing botanist")?;
-        jobs.contains_key(&Job::Fisher) || Err("missing fisher")?;
+        for job in Job::iter() {
+            if !jobs.contains_key(&job) {
+                Err(format!("missing {job:?}"))?;
+            }
+        }
 
         Ok(PlayerJobSnapshot(jobs))
     }
