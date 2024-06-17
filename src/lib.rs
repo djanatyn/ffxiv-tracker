@@ -1,3 +1,5 @@
+#![allow(unused)]
+
 use scraper::{Html, Selector};
 use std::{collections::HashMap, str::FromStr};
 
@@ -52,7 +54,7 @@ pub struct JobSnapshot {
 }
 
 #[derive(Debug)]
-pub struct PlayerSnapshot {
+pub struct JobSnapshots {
     // tanks
     paladin: JobSnapshot,
     warrior: JobSnapshot,
@@ -93,7 +95,7 @@ pub struct PlayerSnapshot {
     fisher: JobSnapshot,
 }
 
-impl TryFrom<Vec<JobSnapshot>> for PlayerSnapshot {
+impl TryFrom<Vec<JobSnapshot>> for JobSnapshots {
     type Error = String;
 
     fn try_from(snapshots: Vec<JobSnapshot>) -> Result<Self, Self::Error> {
@@ -101,7 +103,7 @@ impl TryFrom<Vec<JobSnapshot>> for PlayerSnapshot {
         for snapshot in snapshots {
             jobs.insert(snapshot.job.clone(), snapshot);
         }
-        Ok(PlayerSnapshot {
+        Ok(JobSnapshots {
             paladin: jobs.remove(&Job::Paladin).ok_or("missing paladin")?,
             warrior: jobs.remove(&Job::Warrior).ok_or("missing warrior")?,
             dark_knight: jobs.remove(&Job::DarkKnight).ok_or("missing dark knight")?,
@@ -143,7 +145,7 @@ impl TryFrom<Vec<JobSnapshot>> for PlayerSnapshot {
 
 #[derive(Debug)]
 pub struct Profile {
-    snapshot: PlayerSnapshot,
+    jobs: JobSnapshots,
 }
 
 impl Profile {
@@ -165,7 +167,7 @@ impl Profile {
             Selector::parse("div.character__job__name").map_err(|e| e.to_string())?;
         let select_exp = Selector::parse("div.character__job__exp").map_err(|e| e.to_string())?;
 
-        let mut jobs: Vec<JobSnapshot> = vec![];
+        let mut snapshots: Vec<JobSnapshot> = vec![];
         for job_details in document.select(&select_jobs) {
             let level = job_details
                 .select(&select_level)
@@ -189,14 +191,14 @@ impl Profile {
                 .text()
                 .next()
                 .ok_or("no exp")?;
-            jobs.push(JobSnapshot {
+            snapshots.push(JobSnapshot {
                 job,
                 level: level.to_string(),
                 exp: exp.to_string(),
             });
         }
-        let snapshot = PlayerSnapshot::try_from(jobs)?;
-        Ok(Profile { snapshot })
+        let jobs = JobSnapshots::try_from(snapshots)?;
+        Ok(Profile { jobs })
     }
 }
 
@@ -207,7 +209,7 @@ mod test {
     #[test]
     /// https://na.finalfantasyxiv.com/lodestone/character/38598907/class_job/
     fn fetch_profile() -> Result<(), String> {
-        let profile = Profile::get(38598907)?;
+        let profile = dbg!(Profile::get(38598907)?);
         Ok(())
     }
 }
