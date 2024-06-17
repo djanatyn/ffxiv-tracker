@@ -296,7 +296,11 @@ mod test {
     #[test]
     /// https://na.finalfantasyxiv.com/lodestone/character/38598907/class_job/
     fn fetch_profile() -> Result<(), String> {
-        let profile = dbg!(Profile::get(38598907)?);
+        let user_id: u64 = 38598907;
+        let profile_html = Html::parse_document(include_str!("tests/yov_ziv_profile.html"));
+        let jobs_html = Html::parse_document(include_str!("tests/yov_ziv_jobs.html"));
+
+        dbg!(Profile::parse(user_id, profile_html, jobs_html)?);
         Ok(())
     }
 }
