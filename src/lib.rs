@@ -145,20 +145,134 @@ impl TryFrom<Vec<JobSnapshot>> for JobSnapshots {
 
 #[derive(Debug)]
 pub struct Profile {
+    user_id: u64,
+    free_company: String,
+    name: String,
+    nameday: String,
+    guardian: String,
+    city_state: String,
+    server: String,
+    race_clan_gender: String, // TODO
+    hp: u64,
+    mp: u64,
     jobs: JobSnapshots,
 }
 
 impl Profile {
     pub const BASE_URL: &'static str = "https://na.finalfantasyxiv.com/lodestone/character";
 
-    fn get(id: u64) -> Result<Profile, String> {
-        let url = format!("{0}/{id}/class_job/", Profile::BASE_URL);
-        let html = ureq::get(url.as_str())
+    fn get(user_id: u64) -> Result<Profile, String> {
+        // extract profile page info
+        let profile_url = format!("{0}/{user_id}", Profile::BASE_URL);
+        let profile_html = ureq::get(profile_url.as_str())
             .call()
             .map_err(|e| e.to_string())?
             .into_string()
             .map_err(|e| e.to_string())?;
-        let document = Html::parse_document(&html);
+        let profile_document = Html::parse_document(&profile_html);
+
+        let select_free_company =
+            Selector::parse("div.character__freecompany__name h4").map_err(|e| e.to_string())?;
+        let select_name = Selector::parse("p.frame__chara__name").map_err(|e| e.to_string())?;
+        let select_nameday =
+            Selector::parse("p.character-block__birth").map_err(|e| e.to_string())?;
+        let select_guardian =
+            Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
+        let select_city_state =
+            Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
+        let select_server = Selector::parse("p.frame__chara__world").map_err(|e| e.to_string())?;
+        let select_race_clan_gender =
+            Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
+        let select_hp = Selector::parse("p.character__param__text__hp--en-us + span")
+            .map_err(|e| e.to_string())?;
+        let select_mp = Selector::parse("p.character__param__text__mp--en-us + span")
+            .map_err(|e| e.to_string())?;
+
+        let free_company = profile_document
+            .select(&select_free_company)
+            .next()
+            .ok_or("couldn't find free_company")?
+            .text()
+            .next()
+            .ok_or("no free_company")?
+            .to_string();
+        let name = profile_document
+            .select(&select_name)
+            .next()
+            .ok_or("couldn't find name")?
+            .text()
+            .next()
+            .ok_or("no name")?
+            .to_string();
+        let nameday = profile_document
+            .select(&select_nameday)
+            .next()
+            .ok_or("couldn't find nameday")?
+            .text()
+            .next()
+            .ok_or("no nameday")?
+            .to_string();
+        let guardian = profile_document
+            .select(&select_guardian)
+            .next()
+            .ok_or("couldn't find guardian")?
+            .text()
+            .next()
+            .ok_or("no guardian")?
+            .to_string();
+        let city_state = profile_document
+            .select(&select_city_state)
+            .next()
+            .ok_or("couldn't find city_state")?
+            .text()
+            .next()
+            .ok_or("no city_state")?
+            .to_string();
+        let server = profile_document
+            .select(&select_server)
+            .next()
+            .ok_or("couldn't find server")?
+            .text()
+            .next()
+            .ok_or("no server")?
+            .to_string();
+        let race_clan_gender = profile_document
+            .select(&select_race_clan_gender)
+            .next()
+            .ok_or("couldn't find race_clan_gender")?
+            .text()
+            .next()
+            .ok_or("no race_clan_gender")?
+            .to_string();
+        let hp = profile_document
+            .select(&select_hp)
+            .next()
+            .ok_or("couldn't find hp")?
+            .text()
+            .next()
+            .ok_or("no hp")?
+            .to_string()
+            .parse::<u64>()
+            .map_err(|e| e.to_string())?;
+        let mp = profile_document
+            .select(&select_mp)
+            .next()
+            .ok_or("couldn't find mp")?
+            .text()
+            .next()
+            .ok_or("no mp")?
+            .to_string()
+            .parse::<u64>()
+            .map_err(|e| e.to_string())?;
+
+        // extract job page info
+        let job_url = format!("{0}/{user_id}/class_job/", Profile::BASE_URL);
+        let job_html = ureq::get(job_url.as_str())
+            .call()
+            .map_err(|e| e.to_string())?
+            .into_string()
+            .map_err(|e| e.to_string())?;
+        let job_document = Html::parse_document(&job_html);
 
         let select_jobs = Selector::parse("ul.character__job li").map_err(|e| e.to_string())?;
         let select_level =
@@ -168,7 +282,7 @@ impl Profile {
         let select_exp = Selector::parse("div.character__job__exp").map_err(|e| e.to_string())?;
 
         let mut snapshots: Vec<JobSnapshot> = vec![];
-        for job_details in document.select(&select_jobs) {
+        for job_details in job_document.select(&select_jobs) {
             let level = job_details
                 .select(&select_level)
                 .next()
@@ -198,7 +312,19 @@ impl Profile {
             });
         }
         let jobs = JobSnapshots::try_from(snapshots)?;
-        Ok(Profile { jobs })
+        Ok(Profile {
+            jobs,
+            user_id,
+            free_company,
+            name,
+            nameday,
+            guardian,
+            city_state,
+            server,
+            race_clan_gender,
+            hp,
+            mp,
+        })
     }
 }
 
