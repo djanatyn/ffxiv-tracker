@@ -297,6 +297,7 @@ mod test {
     /// https://na.finalfantasyxiv.com/lodestone/character/38598907/class_job/
     fn fetch_profile() -> Result<(), String> {
         let user_id: u64 = 38598907;
+        // TODO: use script to refresh html
         let profile_html = Html::parse_document(include_str!("tests/yov_ziv_profile.html"));
         let jobs_html = Html::parse_document(include_str!("tests/yov_ziv_jobs.html"));
 
