@@ -120,15 +120,26 @@ impl Profile {
     pub const BASE_URL: &'static str = "https://na.finalfantasyxiv.com/lodestone/character";
 
     fn get(user_id: u64) -> Result<Profile, String> {
-        // extract profile page info
         let profile_url = format!("{0}/{user_id}", Profile::BASE_URL);
         let profile_html = ureq::get(profile_url.as_str())
             .call()
             .map_err(|e| e.to_string())?
             .into_string()
             .map_err(|e| e.to_string())?;
-        let profile_document = Html::parse_document(&profile_html);
+        let profile_html = Html::parse_document(&profile_html);
 
+        let job_url = format!("{0}/{user_id}/class_job/", Profile::BASE_URL);
+        let job_html = ureq::get(job_url.as_str())
+            .call()
+            .map_err(|e| e.to_string())?
+            .into_string()
+            .map_err(|e| e.to_string())?;
+        let job_html = Html::parse_document(&job_html);
+
+        Self::parse(user_id, profile_html, job_html)
+    }
+
+    fn parse(user_id: u64, profile_html: Html, jobs_html: Html) -> Result<Profile, String> {
         let select_free_company =
             Selector::parse("div.character__freecompany__name h4").map_err(|e| e.to_string())?;
         let select_name = Selector::parse("p.frame__chara__name").map_err(|e| e.to_string())?;
@@ -146,7 +157,7 @@ impl Profile {
         let select_mp = Selector::parse("p.character__param__text__mp--en-us + span")
             .map_err(|e| e.to_string())?;
 
-        let free_company = profile_document
+        let free_company = profile_html
             .select(&select_free_company)
             .next()
             .ok_or("couldn't find free_company")?
@@ -154,7 +165,7 @@ impl Profile {
             .next()
             .ok_or("no free_company")?
             .to_string();
-        let name = profile_document
+        let name = profile_html
             .select(&select_name)
             .next()
             .ok_or("couldn't find name")?
@@ -162,7 +173,7 @@ impl Profile {
             .next()
             .ok_or("no name")?
             .to_string();
-        let nameday = profile_document
+        let nameday = profile_html
             .select(&select_nameday)
             .next()
             .ok_or("couldn't find nameday")?
@@ -170,7 +181,7 @@ impl Profile {
             .next()
             .ok_or("no nameday")?
             .to_string();
-        let guardian = profile_document
+        let guardian = profile_html
             .select(&select_guardian)
             .next()
             .ok_or("couldn't find guardian")?
@@ -178,7 +189,7 @@ impl Profile {
             .next()
             .ok_or("no guardian")?
             .to_string();
-        let city_state = profile_document
+        let city_state = profile_html
             .select(&select_city_state)
             .next()
             .ok_or("couldn't find city_state")?
@@ -186,7 +197,7 @@ impl Profile {
             .next()
             .ok_or("no city_state")?
             .to_string();
-        let server = profile_document
+        let server = profile_html
             .select(&select_server)
             .next()
             .ok_or("couldn't find server")?
@@ -194,7 +205,7 @@ impl Profile {
             .next()
             .ok_or("no server")?
             .to_string();
-        let race_clan_gender = profile_document
+        let race_clan_gender = profile_html
             .select(&select_race_clan_gender)
             .next()
             .ok_or("couldn't find race_clan_gender")?
@@ -202,7 +213,7 @@ impl Profile {
             .next()
             .ok_or("no race_clan_gender")?
             .to_string();
-        let hp = profile_document
+        let hp = profile_html
             .select(&select_hp)
             .next()
             .ok_or("couldn't find hp")?
@@ -212,7 +223,7 @@ impl Profile {
             .to_string()
             .parse::<u64>()
             .map_err(|e| e.to_string())?;
-        let mp = profile_document
+        let mp = profile_html
             .select(&select_mp)
             .next()
             .ok_or("couldn't find mp")?
@@ -224,14 +235,6 @@ impl Profile {
             .map_err(|e| e.to_string())?;
 
         // extract job page info
-        let job_url = format!("{0}/{user_id}/class_job/", Profile::BASE_URL);
-        let job_html = ureq::get(job_url.as_str())
-            .call()
-            .map_err(|e| e.to_string())?
-            .into_string()
-            .map_err(|e| e.to_string())?;
-        let job_document = Html::parse_document(&job_html);
-
         let select_jobs = Selector::parse("ul.character__job li").map_err(|e| e.to_string())?;
         let select_level =
             Selector::parse("div.character__job__level").map_err(|e| e.to_string())?;
@@ -240,7 +243,7 @@ impl Profile {
         let select_exp = Selector::parse("div.character__job__exp").map_err(|e| e.to_string())?;
 
         let mut snapshots: Vec<JobSnapshot> = vec![];
-        for job_details in job_document.select(&select_jobs) {
+        for job_details in jobs_html.select(&select_jobs) {
             let level = job_details
                 .select(&select_level)
                 .next()
