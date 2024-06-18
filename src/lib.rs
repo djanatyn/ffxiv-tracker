@@ -1,10 +1,10 @@
 #![allow(unused)]
 
 use scraper::{Html, Selector};
-use std::{collections::HashMap, str::FromStr};
+use std::{collections::BTreeMap, str::FromStr};
 use strum::{EnumIter, EnumString, IntoEnumIterator};
 
-#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone)]
+#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone, PartialOrd, Ord)]
 #[strum(serialize_all = "title_case")]
 pub enum Job {
     // tanks
@@ -55,13 +55,13 @@ pub struct JobSnapshot {
 }
 
 #[derive(Debug)]
-pub struct PlayerJobSnapshot(HashMap<Job, JobSnapshot>);
+pub struct PlayerJobSnapshot(BTreeMap<Job, JobSnapshot>);
 
 impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
     type Error = String;
 
     fn try_from(snapshots: Vec<JobSnapshot>) -> Result<Self, Self::Error> {
-        let mut jobs: HashMap<Job, JobSnapshot> = HashMap::new();
+        let mut jobs: BTreeMap<Job, JobSnapshot> = BTreeMap::new();
         for snapshot in snapshots {
             jobs.insert(snapshot.job.clone(), snapshot);
         }
@@ -234,7 +234,7 @@ impl Profile {
                 .text()
                 .next()
                 .ok_or("no job name")?;
-            let job = Job::from_str(&job_name).map_err(|e| e.to_string())?;
+            let job = Job::from_str(job_name).map_err(|e| e.to_string())?;
             let exp = job_details
                 .select(&select_exp)
                 .next()
@@ -277,7 +277,7 @@ mod test {
         let profile_html = Html::parse_document(include_str!("tests/yov_ziv_profile.html"));
         let jobs_html = Html::parse_document(include_str!("tests/yov_ziv_jobs.html"));
 
-        dbg!(Profile::parse(user_id, profile_html, jobs_html)?);
+        insta::assert_debug_snapshot!(Profile::parse(user_id, profile_html, jobs_html)?);
         Ok(())
     }
 }

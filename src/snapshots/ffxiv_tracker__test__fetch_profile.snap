@@ -1,0 +1,175 @@
+---
+source: src/lib.rs
+expression: "Profile::parse(user_id, profile_html, jobs_html)?"
+---
+Profile {
+    user_id: 38598907,
+    free_company: "Phoenix Crusaders",
+    name: "Yov Ziv",
+    nameday: "6th Sun of the 2nd Umbral Moon",
+    guardian: "Viera",
+    city_state: "Viera",
+    server: "Exodus [Primal]",
+    race_clan_gender: "Viera",
+    hp: 6761,
+    mp: 10000,
+    jobs: PlayerJobSnapshot(
+        {
+            Paladin: JobSnapshot {
+                job: Paladin,
+                level: "90",
+                exp: "-- / --",
+            },
+            Warrior: JobSnapshot {
+                job: Warrior,
+                level: "90",
+                exp: "-- / --",
+            },
+            DarkKnight: JobSnapshot {
+                job: DarkKnight,
+                level: "90",
+                exp: "-- / --",
+            },
+            Gunbreaker: JobSnapshot {
+                job: Gunbreaker,
+                level: "90",
+                exp: "-- / --",
+            },
+            WhiteMage: JobSnapshot {
+                job: WhiteMage,
+                level: "90",
+                exp: "-- / --",
+            },
+            Scholar: JobSnapshot {
+                job: Scholar,
+                level: "90",
+                exp: "-- / --",
+            },
+            Astrologian: JobSnapshot {
+                job: Astrologian,
+                level: "90",
+                exp: "-- / --",
+            },
+            Sage: JobSnapshot {
+                job: Sage,
+                level: "90",
+                exp: "-- / --",
+            },
+            Monk: JobSnapshot {
+                job: Monk,
+                level: "71",
+                exp: "2,047,229 / 3,018,000",
+            },
+            Dragoon: JobSnapshot {
+                job: Dragoon,
+                level: "55",
+                exp: "19,354 / 837,000",
+            },
+            Ninja: JobSnapshot {
+                job: Ninja,
+                level: "60",
+                exp: "871,126 / 1,387,000",
+            },
+            Samurai: JobSnapshot {
+                job: Samurai,
+                level: "66",
+                exp: "1,949,350 / 1,968,000",
+            },
+            Reaper: JobSnapshot {
+                job: Reaper,
+                level: "71",
+                exp: "1,296,273 / 3,018,000",
+            },
+            Bard: JobSnapshot {
+                job: Bard,
+                level: "50",
+                exp: "105,555 / 421,000",
+            },
+            Machinist: JobSnapshot {
+                job: Machinist,
+                level: "50",
+                exp: "173,891 / 421,000",
+            },
+            Dancer: JobSnapshot {
+                job: Dancer,
+                level: "90",
+                exp: "-- / --",
+            },
+            BlackMage: JobSnapshot {
+                job: BlackMage,
+                level: "90",
+                exp: "-- / --",
+            },
+            Summoner: JobSnapshot {
+                job: Summoner,
+                level: "90",
+                exp: "-- / --",
+            },
+            RedMage: JobSnapshot {
+                job: RedMage,
+                level: "60",
+                exp: "432,425 / 1,387,000",
+            },
+            BlueMage: JobSnapshot {
+                job: BlueMage,
+                level: "61",
+                exp: "1,082,360 / 1,456,000",
+            },
+            Carpenter: JobSnapshot {
+                job: Carpenter,
+                level: "77",
+                exp: "981,317 / 4,377,000",
+            },
+            Blacksmith: JobSnapshot {
+                job: Blacksmith,
+                level: "74",
+                exp: "2,571,149 / 3,532,000",
+            },
+            Armorer: JobSnapshot {
+                job: Armorer,
+                level: "68",
+                exp: "1,727,468 / 2,317,000",
+            },
+            Goldsmith: JobSnapshot {
+                job: Goldsmith,
+                level: "72",
+                exp: "1,898,768 / 3,153,000",
+            },
+            Leatherworker: JobSnapshot {
+                job: Leatherworker,
+                level: "78",
+                exp: "1,392,265 / 4,777,000",
+            },
+            Weaver: JobSnapshot {
+                job: Weaver,
+                level: "73",
+                exp: "2,476,633 / 3,324,000",
+            },
+            Alchemist: JobSnapshot {
+                job: Alchemist,
+                level: "67",
+                exp: "914,836 / 2,126,000",
+            },
+            Culinarian: JobSnapshot {
+                job: Culinarian,
+                level: "90",
+                exp: "-- / --",
+            },
+            Miner: JobSnapshot {
+                job: Miner,
+                level: "87",
+                exp: "1,539,855 / 9,529,000",
+            },
+            Botanist: JobSnapshot {
+                job: Botanist,
+                level: "90",
+                exp: "-- / --",
+            },
+            Fisher: JobSnapshot {
+                job: Fisher,
+                level: "75",
+                exp: "857,296 / 3,770,600",
+            },
+        },
+    ),
+}
