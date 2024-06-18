@@ -1,5 +1,5 @@
 ---
-source: src/lib.rs
+source: ffxiv-tracker/src/lib.rs
 expression: "Profile::parse(user_id, profile_html, jobs_html)?"
 ---
 Profile {
@@ -7,11 +7,15 @@ Profile {
     free_company: "Phoenix Crusaders",
     name: "Yov Ziv",
     nameday: "6th Sun of the 2nd Umbral Moon",
-    guardian: "Viera",
-    city_state: "Viera",
+    guardian: "Azeyma, the Warden",
+    city_state: "Gridania",
     server: "Exodus [Primal]",
-    race_clan_gender: "Viera",
-    hp: 6761,
+    race: "Viera",
+    clan: "Veena",
+    gender: "♀",
+    grand_company: "Maelstrom",
+    grand_company_rank: "Storm Captain",
+    hp: 113363,
     mp: 10000,
     jobs: PlayerJobSnapshot(
         {

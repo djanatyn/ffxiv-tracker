@@ -86,7 +86,11 @@ pub struct Profile {
     guardian: String,
     city_state: String,
     server: String,
-    race_clan_gender: String, // TODO
+    race: String,
+    clan: String,
+    gender: String,
+    grand_company: String,
+    grand_company_rank: String,
     hp: u64,
     mp: u64,
     jobs: PlayerJobSnapshot,
@@ -121,13 +125,9 @@ impl Profile {
         let select_name = Selector::parse("p.frame__chara__name").map_err(|e| e.to_string())?;
         let select_nameday =
             Selector::parse("p.character-block__birth").map_err(|e| e.to_string())?;
-        let select_guardian =
-            Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
-        let select_city_state =
+        let select_profile_info =
             Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
         let select_server = Selector::parse("p.frame__chara__world").map_err(|e| e.to_string())?;
-        let select_race_clan_gender =
-            Selector::parse("p.character-block__name").map_err(|e| e.to_string())?;
         let select_hp = Selector::parse("p.character__param__text__hp--en-us + span")
             .map_err(|e| e.to_string())?;
         let select_mp = Selector::parse("p.character__param__text__mp--en-us + span")
@@ -157,22 +157,6 @@ impl Profile {
             .next()
             .ok_or("no nameday")?
             .to_string();
-        let guardian = profile_html
-            .select(&select_guardian)
-            .next()
-            .ok_or("couldn't find guardian")?
-            .text()
-            .next()
-            .ok_or("no guardian")?
-            .to_string();
-        let city_state = profile_html
-            .select(&select_city_state)
-            .next()
-            .ok_or("couldn't find city_state")?
-            .text()
-            .next()
-            .ok_or("no city_state")?
-            .to_string();
         let server = profile_html
             .select(&select_server)
             .next()
@@ -181,14 +165,42 @@ impl Profile {
             .next()
             .ok_or("no server")?
             .to_string();
-        let race_clan_gender = profile_html
-            .select(&select_race_clan_gender)
-            .next()
-            .ok_or("couldn't find race_clan_gender")?
-            .text()
-            .next()
-            .ok_or("no race_clan_gender")?
+        let info: Vec<Vec<&str>> = profile_html
+            .select(&select_profile_info)
+            .map(|e| e.text().collect::<Vec<&str>>())
+            .collect();
+        let (race, clan_gender) = match info[0][..] {
+            [race, clan_gender] => (race.to_string(), clan_gender),
+            _ => Err("failed to find race/clan/gender")?,
+        };
+        let (clan, gender) = match clan_gender
+            .split('/')
+            .map(|t| t.trim())
+            .collect::<Vec<&str>>()[..]
+        {
+            [clan, gender] => (clan.to_string(), gender.to_string()),
+            _ => Err("failed to parse clan/gender")?,
+        };
+        let guardian = info[1]
+            .first()
+            .ok_or("failed to find guardian")?
             .to_string();
+        let city_state = info[2]
+            .first()
+            .ok_or("failed to find city state")?
+            .to_string();
+        let (grand_company, grand_company_rank) = match info[3]
+            .first()
+            .ok_or("failed to find grand company info")?
+            .split('/')
+            .map(|t| t.trim())
+            .collect::<Vec<&str>>()[..]
+        {
+            [grand_company, grand_company_rank] => {
+                (grand_company.to_string(), grand_company_rank.to_string())
+            }
+            _ => Err("failed to parse grand company + grand_company rank")?,
+        };
         let hp = profile_html
             .select(&select_hp)
             .next()
@@ -269,7 +281,11 @@ impl Profile {
             guardian,
             city_state,
             server,
-            race_clan_gender,
+            race,
+            clan,
+            gender,
+            grand_company,
+            grand_company_rank,
             hp,
             mp,
         })
@@ -279,16 +295,40 @@ impl Profile {
 #[cfg(test)]
 mod test {
     use super::*;
+    use std::path::Path;
+
+    const PROFILES: &'static str = include_str!("tests/test-profiles.kdl");
+
+    #[derive(Debug, knuffel::Decode)]
+    struct TestProfile {
+        #[knuffel(argument)]
+        name: String,
+        #[knuffel(property)]
+        id: u64,
+    }
 
     #[test]
     /// https://na.finalfantasyxiv.com/lodestone/character/38598907/class_job/
     fn fetch_profile() -> Result<(), String> {
-        let user_id: u64 = 38598907;
-        // TODO: use script to refresh html
-        let profile_html = Html::parse_document(include_str!("tests/yov_ziv_profile.html"));
-        let jobs_html = Html::parse_document(include_str!("tests/yov_ziv_jobs.html"));
+        let profiles = knuffel::parse::<Vec<TestProfile>>("test-profiles.kdl", PROFILES).unwrap();
+        let base_path = Path::new(file!())
+            .parent()
+            .ok_or("failed to get root path")?;
 
-        insta::assert_debug_snapshot!(Profile::parse(user_id, profile_html, jobs_html)?);
+        for profile in profiles {
+            // TODO: what path :(
+            let profile_text =
+                std::fs::read_to_string(format!("./tests/{}_profile.html", profile.name))
+                    .map_err(|e| e.to_string())?;
+            let profile_html = Html::parse_document(&profile_text);
+            let job_text = std::fs::read_to_string(
+                base_path.join(format!("./tests/{}_jobs.html", profile.name)),
+            )
+            .map_err(|e| e.to_string())?;
+            let jobs_html = Html::parse_document(&job_text);
+            insta::assert_debug_snapshot!(Profile::parse(profile.id, profile_html, jobs_html)?);
+        }
+
         Ok(())
     }
 }

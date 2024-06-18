@@ -1,0 +1,20 @@
+[package]
+name = "ffxiv-tracker"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+insta = { workspace = true }
+scraper = { workspace = true }
+strum = { workspace = true }
+ureq = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+knuffel = { workspace = true }
+
+[lib]
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "ffxiv-tracker"
+test = false

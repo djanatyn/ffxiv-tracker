@@ -1,18 +1,13 @@
-[package]
-name = "ffxiv-tracker"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+members = ["ffxiv-tracker", "tasks"]
+resolver = "2"
 
-[lib]
-crate-type = ["cdylib"]
-
-[[bin]]
-name = "ffxiv-tracker"
-test = false
-
-[dependencies]
+[workspace.dependencies]
 insta = "1.39.0"
 scraper = "0.19.0"
 strum = { version = "0.26.2", features = ["derive"] }
-thiserror = "1.0.61"
 ureq = "2.9.7"
+clap = { version = "4.5.7", features = ["derive"] }
+knuffel = "3.2.0"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
