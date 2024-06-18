@@ -4,7 +4,7 @@ use scraper::{Html, Selector};
 use std::{collections::BTreeMap, str::FromStr};
 use strum::{EnumIter, EnumString, IntoEnumIterator};
 
-#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone, PartialOrd, Ord)]
+#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone, Copy, PartialOrd, Ord)]
 #[strum(serialize_all = "title_case")]
 pub enum Job {
     // tanks
@@ -50,8 +50,8 @@ pub enum Job {
 #[derive(Debug)]
 pub struct JobSnapshot {
     job: Job,
-    level: String, // TODO
-    exp: String,   // TODO
+    level: Option<u64>,
+    exp: Option<(u64, u64)>,
 }
 
 #[derive(Debug)]
@@ -63,7 +63,7 @@ impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
     fn try_from(snapshots: Vec<JobSnapshot>) -> Result<Self, Self::Error> {
         let mut jobs: BTreeMap<Job, JobSnapshot> = BTreeMap::new();
         for snapshot in snapshots {
-            jobs.insert(snapshot.job.clone(), snapshot);
+            jobs.insert(snapshot.job, snapshot);
         }
 
         // check for each job before constructing
@@ -210,7 +210,7 @@ impl Profile {
             .parse::<u64>()
             .map_err(|e| e.to_string())?;
 
-        // extract job page info
+        // extract job info page
         let select_jobs = Selector::parse("ul.character__job li").map_err(|e| e.to_string())?;
         let select_level =
             Selector::parse("div.character__job__level").map_err(|e| e.to_string())?;
@@ -220,13 +220,17 @@ impl Profile {
 
         let mut snapshots: Vec<JobSnapshot> = vec![];
         for job_details in jobs_html.select(&select_jobs) {
-            let level = job_details
+            let level_string = job_details
                 .select(&select_level)
                 .next()
                 .ok_or("couldn't find level")?
                 .text()
                 .next()
                 .ok_or("no level")?;
+            let level = match level_string {
+                "-" => None,
+                some => some.replace(",", "").trim().parse::<u64>().ok(),
+            };
             let job_name = job_details
                 .select(&select_job_name)
                 .next()
@@ -235,18 +239,25 @@ impl Profile {
                 .next()
                 .ok_or("no job name")?;
             let job = Job::from_str(job_name).map_err(|e| e.to_string())?;
-            let exp = job_details
+            let exp_string = job_details
                 .select(&select_exp)
                 .next()
                 .ok_or("couldn't find exp")?
                 .text()
                 .next()
                 .ok_or("no exp")?;
-            snapshots.push(JobSnapshot {
-                job,
-                level: level.to_string(),
-                exp: exp.to_string(),
-            });
+            let exp_parts: Vec<Option<u64>> = exp_string
+                .split('/')
+                .map(|part| match part {
+                    "--" => None,
+                    some => some.replace(",", "").trim().parse::<u64>().ok(),
+                })
+                .collect();
+            let exp = match &exp_parts[..] {
+                &[Some(current), Some(next)] => Some((current, next)),
+                _ => None,
+            };
+            snapshots.push(JobSnapshot { job, level, exp });
         }
         let jobs = PlayerJobSnapshot::try_from(snapshots)?;
         Ok(Profile {
