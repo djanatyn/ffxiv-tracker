@@ -8,27 +8,36 @@ use strum::{EnumIter, EnumString, IntoEnumIterator};
 #[strum(serialize_all = "title_case")]
 pub enum Job {
     // tanks
+    #[strum(serialize = "Paladin", serialize = "Gladiator")]
     Paladin,
+    #[strum(serialize = "Marauder", serialize = "Warrior")]
     Warrior,
     DarkKnight,
     Gunbreaker,
     // healers
+    #[strum(serialize = "Conjurer", serialize = "White Mage")]
     WhiteMage,
     Scholar,
     Astrologian,
     Sage,
     // melee dps
+    #[strum(serialize = "Pugilist", serialize = "Monk")]
     Monk,
+    #[strum(serialize = "Lancer", serialize = "Dragoon")]
     Dragoon,
+    #[strum(serialize = "Rogue", serialize = "Ninja")]
     Ninja,
     Samurai,
     Reaper,
     // phys ranged
+    #[strum(serialize = "Archer", serialize = "Bard")]
     Bard,
     Machinist,
     Dancer,
     // casters
+    #[strum(serialize = "Thaumaturge", serialize = "Black Mage")]
     BlackMage,
+    #[strum(serialize = "Arcanist", serialize = "Summoner")]
     Summoner,
     RedMage,
     BlueMage,
@@ -55,6 +64,7 @@ pub struct JobSnapshot {
 }
 
 #[derive(Debug)]
+/// Snapshot of all jobs. Containers either Arcanist, or Summoner, but not both.
 pub struct PlayerJobSnapshot(BTreeMap<Job, JobSnapshot>);
 
 impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
@@ -80,7 +90,7 @@ impl TryFrom<Vec<JobSnapshot>> for PlayerJobSnapshot {
 #[derive(Debug)]
 pub struct Profile {
     user_id: u64,
-    free_company: String,
+    free_company: Option<String>,
     name: String,
     nameday: String,
     guardian: String,
@@ -132,15 +142,10 @@ impl Profile {
             .map_err(|e| e.to_string())?;
         let select_mp = Selector::parse("p.character__param__text__mp--en-us + span")
             .map_err(|e| e.to_string())?;
-
-        let free_company = profile_html
-            .select(&select_free_company)
-            .next()
-            .ok_or("couldn't find free_company")?
-            .text()
-            .next()
-            .ok_or("no free_company")?
-            .to_string();
+        let free_company = match profile_html.select(&select_free_company).next() {
+            Some(element) => element.text().next().map(|txt| txt.to_string()),
+            None => None,
+        };
         let name = profile_html
             .select(&select_name)
             .next()
@@ -295,9 +300,11 @@ impl Profile {
 #[cfg(test)]
 mod test {
     use super::*;
+    use include_dir::{include_dir, Dir};
     use std::path::Path;
 
     const PROFILES: &'static str = include_str!("tests/test-profiles.kdl");
+    static TEST_DIR: Dir<'_> = include_dir!("$CARGO_MANIFEST_DIR/src/tests");
 
     #[derive(Debug, knuffel::Decode)]
     struct TestProfile {
@@ -311,22 +318,24 @@ mod test {
     /// https://na.finalfantasyxiv.com/lodestone/character/38598907/class_job/
     fn fetch_profile() -> Result<(), String> {
         let profiles = knuffel::parse::<Vec<TestProfile>>("test-profiles.kdl", PROFILES).unwrap();
-        let base_path = Path::new(file!())
-            .parent()
-            .ok_or("failed to get root path")?;
 
         for profile in profiles {
-            // TODO: what path :(
-            let profile_text =
-                std::fs::read_to_string(format!("./tests/{}_profile.html", profile.name))
-                    .map_err(|e| e.to_string())?;
-            let profile_html = Html::parse_document(&profile_text);
-            let job_text = std::fs::read_to_string(
-                base_path.join(format!("./tests/{}_jobs.html", profile.name)),
-            )
-            .map_err(|e| e.to_string())?;
-            let jobs_html = Html::parse_document(&job_text);
-            insta::assert_debug_snapshot!(Profile::parse(profile.id, profile_html, jobs_html)?);
+            let text_profile = TEST_DIR
+                .get_file(format!("{}_profile.html", profile.name))
+                .unwrap()
+                .contents_utf8()
+                .unwrap();
+            let text_jobs = TEST_DIR
+                .get_file(format!("{}_jobs.html", profile.name))
+                .unwrap()
+                .contents_utf8()
+                .unwrap();
+            let profile_html = Html::parse_document(&text_profile);
+            let jobs_html = Html::parse_document(&text_jobs);
+            insta::assert_debug_snapshot!(
+                profile.name,
+                Profile::parse(profile.id, profile_html, jobs_html)?
+            );
         }
 
         Ok(())

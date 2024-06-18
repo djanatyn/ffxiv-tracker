@@ -1,10 +1,12 @@
 ---
 source: ffxiv-tracker/src/lib.rs
-expression: "Profile::parse(user_id, profile_html, jobs_html)?"
+expression: "Profile::parse(profile.id, profile_html, jobs_html)?"
 ---
 Profile {
     user_id: 38598907,
-    free_company: "Phoenix Crusaders",
+    free_company: Some(
+        "Phoenix Crusaders",
+    ),
     name: "Yov Ziv",
     nameday: "6th Sun of the 2nd Umbral Moon",
     guardian: "Azeyma, the Warden",

@@ -11,6 +11,7 @@ ureq = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 knuffel = { workspace = true }
+include_dir = { workspace = true }
 
 [lib]
 crate-type = ["cdylib"]
