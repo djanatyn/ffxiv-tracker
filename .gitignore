@@ -1,3 +1,2 @@
-/target
-/ffxiv-tracker/target
-/tasks/target
+**/target
+**/*.html
