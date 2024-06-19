@@ -170,6 +170,8 @@ impl Profile {
             .next()
             .ok_or("no server")?
             .to_string();
+        // TODO: this doesn't work, the order is not consistent, we need to
+        // match each box individually and inspect the name
         let info: Vec<Vec<&str>> = profile_html
             .select(&select_profile_info)
             .map(|e| e.text().collect::<Vec<&str>>())
