@@ -1,0 +1,188 @@
+---
+source: ffxiv-tracker/src/profile.rs
+expression: "Profile::parse(profile.id, profile_html, jobs_html)?"
+---
+Profile {
+    user_id: 13597740,
+    free_company: Some(
+        "JBlack Microwave",
+    ),
+    name: "A' Akumatan",
+    nameday: "1st Sun of the 1st Astral Moon",
+    guardian: "Halone, the Fury",
+    city_state: "Limsa Lominsa",
+    server: "Atomos [Elemental]",
+    race: "Hyur",
+    clan: "Highlander",
+    gender: "♂",
+    grand_company: None,
+    grand_company_rank: None,
+    hp: 132,
+    mp: 10000,
+    jobs: PlayerJobSnapshot(
+        {
+            Paladin: JobSnapshot {
+                job: Paladin,
+                level: None,
+                exp: None,
+            },
+            Warrior: JobSnapshot {
+                job: Warrior,
+                level: Some(
+                    1,
+                ),
+                exp: Some(
+                    (
+                        0,
+                        300,
+                    ),
+                ),
+            },
+            DarkKnight: JobSnapshot {
+                job: DarkKnight,
+                level: None,
+                exp: None,
+            },
+            Gunbreaker: JobSnapshot {
+                job: Gunbreaker,
+                level: None,
+                exp: None,
+            },
+            WhiteMage: JobSnapshot {
+                job: WhiteMage,
+                level: None,
+                exp: None,
+            },
+            Scholar: JobSnapshot {
+                job: Scholar,
+                level: None,
+                exp: None,
+            },
+            Astrologian: JobSnapshot {
+                job: Astrologian,
+                level: None,
+                exp: None,
+            },
+            Sage: JobSnapshot {
+                job: Sage,
+                level: None,
+                exp: None,
+            },
+            Monk: JobSnapshot {
+                job: Monk,
+                level: None,
+                exp: None,
+            },
+            Dragoon: JobSnapshot {
+                job: Dragoon,
+                level: None,
+                exp: None,
+            },
+            Ninja: JobSnapshot {
+                job: Ninja,
+                level: None,
+                exp: None,
+            },
+            Samurai: JobSnapshot {
+                job: Samurai,
+                level: None,
+                exp: None,
+            },
+            Reaper: JobSnapshot {
+                job: Reaper,
+                level: None,
+                exp: None,
+            },
+            Bard: JobSnapshot {
+                job: Bard,
+                level: None,
+                exp: None,
+            },
+            Machinist: JobSnapshot {
+                job: Machinist,
+                level: None,
+                exp: None,
+            },
+            Dancer: JobSnapshot {
+                job: Dancer,
+                level: None,
+                exp: None,
+            },
+            BlackMage: JobSnapshot {
+                job: BlackMage,
+                level: None,
+                exp: None,
+            },
+            Summoner: JobSnapshot {
+                job: Summoner,
+                level: None,
+                exp: None,
+            },
+            RedMage: JobSnapshot {
+                job: RedMage,
+                level: None,
+                exp: None,
+            },
+            BlueMage: JobSnapshot {
+                job: BlueMage,
+                level: None,
+                exp: None,
+            },
+            Carpenter: JobSnapshot {
+                job: Carpenter,
+                level: None,
+                exp: None,
+            },
+            Armorer: JobSnapshot {
+                job: Armorer,
+                level: None,
+                exp: None,
+            },
+            Blacksmith: JobSnapshot {
+                job: Blacksmith,
+                level: None,
+                exp: None,
+            },
+            Goldsmith: JobSnapshot {
+                job: Goldsmith,
+                level: None,
+                exp: None,
+            },
+            Leatherworker: JobSnapshot {
+                job: Leatherworker,
+                level: None,
+                exp: None,
+            },
+            Weaver: JobSnapshot {
+                job: Weaver,
+                level: None,
+                exp: None,
+            },
+            Alchemist: JobSnapshot {
+                job: Alchemist,
+                level: None,
+                exp: None,
+            },
+            Culinarian: JobSnapshot {
+                job: Culinarian,
+                level: None,
+                exp: None,
+            },
+            Miner: JobSnapshot {
+                job: Miner,
+                level: None,
+                exp: None,
+            },
+            Botanist: JobSnapshot {
+                job: Botanist,
+                level: None,
+                exp: None,
+            },
+            Fisher: JobSnapshot {
+                job: Fisher,
+                level: None,
+                exp: None,
+            },
+        },
+    ),
+}

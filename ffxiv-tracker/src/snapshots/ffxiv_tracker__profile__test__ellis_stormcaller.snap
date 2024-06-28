@@ -1,53 +1,68 @@
 ---
-source: ffxiv-tracker/src/lib.rs
+source: ffxiv-tracker/src/profile.rs
 expression: "Profile::parse(profile.id, profile_html, jobs_html)?"
 ---
 Profile {
-    user_id: 9036942,
-    free_company: Some(
-        "Scary Lizard League",
-    ),
-    name: "Nova Dubois",
-    nameday: "4th Sun of the 5th Astral Moon",
-    guardian: "Menphina, the Lover",
-    city_state: "Ul'dah",
-    server: "Zalera [Crystal]",
-    race: "Miqo'te",
-    clan: "Keeper of the Moon",
+    user_id: 26351638,
+    free_company: None,
+    name: "Ellis Stormcaller",
+    nameday: "15th Sun of the 1st Astral Moon",
+    guardian: "Thaliak, the Scholar",
+    city_state: "Gridania",
+    server: "Famfrit [Primal]",
+    race: "Au Ra",
+    clan: "Raen",
     gender: "♀",
-    grand_company: "Order of the Twin Adder",
-    grand_company_rank: "Serpent Captain",
-    hp: 112359,
+    grand_company: Some(
+        "Order of the Twin Adder",
+    ),
+    grand_company_rank: Some(
+        "Second Serpent Lieutenant",
+    ),
+    hp: 67909,
     mp: 10000,
     jobs: PlayerJobSnapshot(
         {
             Paladin: JobSnapshot {
                 job: Paladin,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Warrior: JobSnapshot {
                 job: Warrior,
                 level: Some(
-                    90,
+                    8,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        0,
+                        3920,
+                    ),
+                ),
             },
             DarkKnight: JobSnapshot {
                 job: DarkKnight,
                 level: Some(
-                    90,
+                    38,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        0,
+                        133000,
+                    ),
+                ),
             },
             Gunbreaker: JobSnapshot {
                 job: Gunbreaker,
                 level: Some(
-                    90,
+                    60,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        500781,
+                        1387000,
+                    ),
+                ),
             },
             WhiteMage: JobSnapshot {
                 job: WhiteMage,
@@ -80,65 +95,96 @@ Profile {
             Monk: JobSnapshot {
                 job: Monk,
                 level: Some(
-                    90,
+                    10,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        0,
+                        5900,
+                    ),
+                ),
             },
             Dragoon: JobSnapshot {
                 job: Dragoon,
                 level: Some(
-                    90,
+                    2,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        0,
+                        450,
+                    ),
+                ),
             },
             Ninja: JobSnapshot {
                 job: Ninja,
                 level: Some(
-                    90,
+                    10,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        199,
+                        5900,
+                    ),
+                ),
             },
             Samurai: JobSnapshot {
                 job: Samurai,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Reaper: JobSnapshot {
                 job: Reaper,
                 level: Some(
-                    90,
+                    84,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        3371166,
+                        7948000,
+                    ),
+                ),
             },
             Bard: JobSnapshot {
                 job: Bard,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Machinist: JobSnapshot {
                 job: Machinist,
                 level: Some(
-                    90,
+                    80,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        5158855,
+                        5992000,
+                    ),
+                ),
             },
             Dancer: JobSnapshot {
                 job: Dancer,
                 level: Some(
-                    90,
+                    86,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        2402576,
+                        9231000,
+                    ),
+                ),
             },
             BlackMage: JobSnapshot {
                 job: BlackMage,
                 level: Some(
-                    90,
+                    12,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        7231,
+                        8620,
+                    ),
+                ),
             },
             Summoner: JobSnapshot {
                 job: Summoner,
@@ -157,44 +203,74 @@ Profile {
             BlueMage: JobSnapshot {
                 job: BlueMage,
                 level: Some(
-                    80,
+                    10,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        2682,
+                        5900,
+                    ),
+                ),
             },
             Carpenter: JobSnapshot {
                 job: Carpenter,
                 level: Some(
-                    90,
+                    79,
                 ),
-                exp: None,
-            },
-            Blacksmith: JobSnapshot {
-                job: Blacksmith,
-                level: Some(
-                    90,
+                exp: Some(
+                    (
+                        3145151,
+                        5256000,
+                    ),
                 ),
-                exp: None,
             },
             Armorer: JobSnapshot {
                 job: Armorer,
                 level: Some(
-                    90,
+                    80,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        125332,
+                        5992000,
+                    ),
+                ),
+            },
+            Blacksmith: JobSnapshot {
+                job: Blacksmith,
+                level: Some(
+                    80,
+                ),
+                exp: Some(
+                    (
+                        2027364,
+                        5992000,
+                    ),
+                ),
             },
             Goldsmith: JobSnapshot {
                 job: Goldsmith,
                 level: Some(
-                    90,
+                    80,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        5468331,
+                        5992000,
+                    ),
+                ),
             },
             Leatherworker: JobSnapshot {
                 job: Leatherworker,
                 level: Some(
-                    90,
+                    80,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        4476074,
+                        5992000,
+                    ),
+                ),
             },
             Weaver: JobSnapshot {
                 job: Weaver,
@@ -206,16 +282,26 @@ Profile {
             Alchemist: JobSnapshot {
                 job: Alchemist,
                 level: Some(
-                    90,
+                    77,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        3254801,
+                        4377000,
+                    ),
+                ),
             },
             Culinarian: JobSnapshot {
                 job: Culinarian,
                 level: Some(
-                    90,
+                    61,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        522648,
+                        1456000,
+                    ),
+                ),
             },
             Miner: JobSnapshot {
                 job: Miner,
@@ -234,9 +320,14 @@ Profile {
             Fisher: JobSnapshot {
                 job: Fisher,
                 level: Some(
-                    90,
+                    56,
                 ),
-                exp: None,
+                exp: Some(
+                    (
+                        578532,
+                        927000,
+                    ),
+                ),
             },
         },
     ),

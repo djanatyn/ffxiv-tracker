@@ -1,5 +1,5 @@
 ---
-source: ffxiv-tracker/src/lib.rs
+source: ffxiv-tracker/src/profile.rs
 expression: "Profile::parse(profile.id, profile_html, jobs_html)?"
 ---
 Profile {
@@ -15,8 +15,12 @@ Profile {
     race: "Viera",
     clan: "Veena",
     gender: "♀",
-    grand_company: "Maelstrom",
-    grand_company_rank: "Storm Captain",
+    grand_company: Some(
+        "Maelstrom",
+    ),
+    grand_company_rank: Some(
+        "Storm Captain",
+    ),
     hp: 113363,
     mp: 10000,
     jobs: PlayerJobSnapshot(
@@ -218,18 +222,6 @@ Profile {
                     ),
                 ),
             },
-            Blacksmith: JobSnapshot {
-                job: Blacksmith,
-                level: Some(
-                    74,
-                ),
-                exp: Some(
-                    (
-                        2571149,
-                        3532000,
-                    ),
-                ),
-            },
             Armorer: JobSnapshot {
                 job: Armorer,
                 level: Some(
@@ -239,6 +231,18 @@ Profile {
                     (
                         1727468,
                         2317000,
+                    ),
+                ),
+            },
+            Blacksmith: JobSnapshot {
+                job: Blacksmith,
+                level: Some(
+                    74,
+                ),
+                exp: Some(
+                    (
+                        2571149,
+                        3532000,
                     ),
                 ),
             },
