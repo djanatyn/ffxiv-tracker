@@ -73,7 +73,7 @@ pub struct JobSnapshot {
     pub exp: Option<(u64, u64)>,
 }
 
-/// Snapshot of all jobs. Containers either Arcanist, or Summoner, but not both.
+/// Snapshot of all jobs.
 #[derive(Debug)]
 pub struct PlayerJobSnapshot(pub BTreeMap<Job, JobSnapshot>);
 
