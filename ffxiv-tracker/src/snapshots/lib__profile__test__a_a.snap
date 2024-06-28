@@ -3,243 +3,189 @@ source: ffxiv-tracker/src/profile.rs
 expression: "Profile::parse(profile.id, profile_html, jobs_html)?"
 ---
 Profile {
-    user_id: 9036942,
-    free_company: Some(
-        "Scary Lizard League",
-    ),
-    name: "Nova Dubois",
-    nameday: "4th Sun of the 5th Astral Moon",
-    guardian: "Menphina, the Lover",
-    city_state: "Ul'dah",
-    server: "Zalera [Crystal]",
-    race: "Miqo'te",
-    clan: "Keeper of the Moon",
+    user_id: 12933634,
+    free_company: None,
+    name: "A' A'",
+    nameday: "32nd Sun of the 6th Umbral Moon",
+    guardian: "Azeyma, the Warden",
+    city_state: "Limsa Lominsa",
+    server: "Anima [Mana]",
+    race: "Au Ra",
+    clan: "Raen",
     gender: "♀",
-    grand_company: Some(
-        "Order of the Twin Adder",
-    ),
-    grand_company_rank: Some(
-        "Serpent Captain",
-    ),
-    hp: 112359,
-    mp: 10000,
+    grand_company: None,
+    grand_company_rank: None,
+    hp: 87,
+    mp: 53,
     jobs: PlayerJobSnapshot(
         {
             Paladin: JobSnapshot {
                 job: Paladin,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Warrior: JobSnapshot {
                 job: Warrior,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             DarkKnight: JobSnapshot {
                 job: DarkKnight,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Gunbreaker: JobSnapshot {
                 job: Gunbreaker,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             WhiteMage: JobSnapshot {
                 job: WhiteMage,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Scholar: JobSnapshot {
                 job: Scholar,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Astrologian: JobSnapshot {
                 job: Astrologian,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Sage: JobSnapshot {
                 job: Sage,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Monk: JobSnapshot {
                 job: Monk,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Dragoon: JobSnapshot {
                 job: Dragoon,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Ninja: JobSnapshot {
                 job: Ninja,
                 level: Some(
-                    90,
+                    4,
                 ),
                 exp: None,
             },
             Samurai: JobSnapshot {
                 job: Samurai,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Reaper: JobSnapshot {
                 job: Reaper,
-                level: Some(
-                    90,
-                ),
+                level: None,
+                exp: None,
+            },
+            Viper: JobSnapshot {
+                job: Viper,
+                level: None,
                 exp: None,
             },
             Bard: JobSnapshot {
                 job: Bard,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Machinist: JobSnapshot {
                 job: Machinist,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Dancer: JobSnapshot {
                 job: Dancer,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             BlackMage: JobSnapshot {
                 job: BlackMage,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Summoner: JobSnapshot {
                 job: Summoner,
                 level: Some(
-                    90,
+                    10,
                 ),
                 exp: None,
             },
             RedMage: JobSnapshot {
                 job: RedMage,
-                level: Some(
-                    90,
-                ),
+                level: None,
+                exp: None,
+            },
+            Pictomancer: JobSnapshot {
+                job: Pictomancer,
+                level: None,
                 exp: None,
             },
             BlueMage: JobSnapshot {
                 job: BlueMage,
-                level: Some(
-                    80,
-                ),
+                level: None,
                 exp: None,
             },
             Carpenter: JobSnapshot {
                 job: Carpenter,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Armorer: JobSnapshot {
                 job: Armorer,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Blacksmith: JobSnapshot {
                 job: Blacksmith,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Goldsmith: JobSnapshot {
                 job: Goldsmith,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Leatherworker: JobSnapshot {
                 job: Leatherworker,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Weaver: JobSnapshot {
                 job: Weaver,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Alchemist: JobSnapshot {
                 job: Alchemist,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Culinarian: JobSnapshot {
                 job: Culinarian,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Miner: JobSnapshot {
                 job: Miner,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Botanist: JobSnapshot {
                 job: Botanist,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
             Fisher: JobSnapshot {
                 job: Fisher,
-                level: Some(
-                    90,
-                ),
+                level: None,
                 exp: None,
             },
         },

@@ -93,6 +93,11 @@ Profile {
                 level: None,
                 exp: None,
             },
+            Viper: JobSnapshot {
+                job: Viper,
+                level: None,
+                exp: None,
+            },
             Bard: JobSnapshot {
                 job: Bard,
                 level: None,
@@ -120,6 +125,11 @@ Profile {
             },
             RedMage: JobSnapshot {
                 job: RedMage,
+                level: None,
+                exp: None,
+            },
+            Pictomancer: JobSnapshot {
+                job: Pictomancer,
                 level: None,
                 exp: None,
             },
