@@ -1,8 +1,5 @@
-use std::{
-    collections::{BTreeMap, HashMap},
-    str::FromStr,
-};
-use strum::{EnumIter, EnumString, IntoEnumIterator};
+use std::collections::BTreeMap;
+use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 
 /// Player jobs. When encountering an initial class (such as Marauder), we parse
 /// it as the appropriate matching job (such as Warrior).
@@ -11,41 +8,43 @@ use strum::{EnumIter, EnumString, IntoEnumIterator};
 /// Summoner.
 ///
 /// Limited jobs such as Blue Mage are included.
-#[derive(Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone, Copy, PartialOrd, Ord)]
+#[derive(
+    Debug, EnumString, EnumIter, Eq, Hash, PartialEq, Clone, Copy, PartialOrd, Ord, Display,
+)]
 #[strum(serialize_all = "title_case")]
 pub enum Job {
     // tanks
-    #[strum(serialize = "Paladin", serialize = "Gladiator")]
+    #[strum(to_string = "Paladin", serialize = "Gladiator")]
     Paladin,
-    #[strum(serialize = "Marauder", serialize = "Warrior")]
+    #[strum(to_string = "Warrior", serialize = "Marauder")]
     Warrior,
     DarkKnight,
     Gunbreaker,
     // healers
-    #[strum(serialize = "Conjurer", serialize = "White Mage")]
+    #[strum(to_string = "White Mage", serialize = "Conjurer")]
     WhiteMage,
     Scholar,
     Astrologian,
     Sage,
     // melee dps
-    #[strum(serialize = "Pugilist", serialize = "Monk")]
+    #[strum(to_string = "Monk", serialize = "Pugilist")]
     Monk,
-    #[strum(serialize = "Lancer", serialize = "Dragoon")]
+    #[strum(to_string = "Dragoon", serialize = "Lancer")]
     Dragoon,
-    #[strum(serialize = "Rogue", serialize = "Ninja")]
+    #[strum(to_string = "Ninja", serialize = "Rogue")]
     Ninja,
     Samurai,
     Reaper,
     Viper,
     // phys ranged
-    #[strum(serialize = "Archer", serialize = "Bard")]
+    #[strum(to_string = "Bard", serialize = "Archer")]
     Bard,
     Machinist,
     Dancer,
     // casters
-    #[strum(serialize = "Thaumaturge", serialize = "Black Mage")]
+    #[strum(to_string = "Black Mage", serialize = "Thaumaturge")]
     BlackMage,
-    #[strum(serialize = "Arcanist", serialize = "Summoner")]
+    #[strum(to_string = "Summoner", serialize = "Arcanist")]
     Summoner,
     RedMage,
     Pictomancer,

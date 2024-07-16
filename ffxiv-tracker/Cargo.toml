@@ -13,6 +13,7 @@ tracing-subscriber = { workspace = true }
 knuffel = { workspace = true }
 include_dir = { workspace = true }
 clap = { workspace = true }
+rusqlite = { workspace = true }
 
 [lib]
 name = "lib"

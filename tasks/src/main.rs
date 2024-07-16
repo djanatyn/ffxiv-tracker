@@ -4,8 +4,8 @@ use std::path::{Path, PathBuf};
 use clap::{Parser, Subcommand};
 use tracing::{event, info_span, instrument, Level};
 
-const PROFILE_BASE_URL: &'static str = "https://na.finalfantasyxiv.com/lodestone/character/";
-const PROFILES: &'static str = include_str!("tests/test-profiles.kdl");
+const PROFILE_BASE_URL: &str = "https://na.finalfantasyxiv.com/lodestone/character/";
+const PROFILES: &str = include_str!("tests/test-profiles.kdl");
 
 #[derive(Debug, knuffel::Decode)]
 struct TestProfile {

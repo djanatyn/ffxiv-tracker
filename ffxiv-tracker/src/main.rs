@@ -1,6 +1,10 @@
+mod db;
 mod job;
 mod profile;
 
+use std::path::PathBuf;
+
+use db::TrackerDatabase;
 use profile::Profile;
 
 use clap::{Parser, Subcommand};
@@ -16,7 +20,11 @@ struct Cli {
 #[derive(Subcommand)]
 enum Command {
     /// Download/update files for running tests.
-    Snapshot { user_id: u64 },
+    Snapshot {
+        user_id: u64,
+        #[arg(default_value = "./ffxiv-tracker.sqlite")]
+        database_path: PathBuf,
+    },
 }
 
 fn main() -> Result<(), String> {
@@ -24,15 +32,27 @@ fn main() -> Result<(), String> {
     tracing_subscriber::fmt::init();
 
     match cli.command {
-        Command::Snapshot { user_id } => snapshot(user_id),
+        Command::Snapshot {
+            user_id,
+            database_path,
+        } => snapshot(user_id, database_path),
     }
 }
 
 #[instrument]
-fn snapshot(user_id: u64) -> Result<(), String> {
+fn snapshot(user_id: u64, database_path: PathBuf) -> Result<(), String> {
+    let database = info_span!("db").in_scope(|| {
+        let db = TrackerDatabase {
+            path: database_path,
+        };
+        event!(Level::INFO, "initializing database");
+        db.init()?;
+        Ok::<TrackerDatabase, String>(db)
+    })?;
     let profile = info_span!("fetch").in_scope(|| {
         event!(Level::INFO, "downloading profile");
         Profile::get(user_id)
     })?;
-    todo!()
+
+    database.snapshot(profile)
 }
